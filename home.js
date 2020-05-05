@@ -137,3 +137,5 @@ function setAlarm() {
 function initAlarm() {
     alarmSound.play();
 }
+
+console.log(typeof (initAlarm));
