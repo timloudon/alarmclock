@@ -18,6 +18,7 @@ let alarmSelector = document.createElement('form');
 let alarmLabel = document.createElement('label');
 let alarmInput = document.createElement('input');
 let alarmSet = document.createElement('input');
+let alarmStop = document.createElement('input')
 
 // Create and append elements
 
@@ -33,6 +34,7 @@ alarmElement.appendChild(alarmSelector);
 alarmSelector.appendChild(alarmLabel);
 alarmSelector.appendChild(alarmInput);
 alarmSelector.appendChild(alarmSet);
+alarmSelector.appendChild(alarmStop);
 
 // Create form data
 
@@ -43,6 +45,10 @@ alarmSet.setAttribute('type', 'button');
 alarmSet.setAttribute('value', 'Set Alarm');
 alarmSet.setAttribute('id', 'set-alarm');
 alarmSet.setAttribute('onclick', 'setAlarm()');
+alarmStop.setAttribute('type', 'button');
+alarmStop.setAttribute('value', 'Stop Alarm');
+alarmStop.setAttribute('id', 'stop-alarm');
+alarmStop.setAttribute('onclick', 'stopAlarm()');
 
 // Set class attribute
 
@@ -75,23 +81,22 @@ function showTime() {
 }
 
 showTime();
-setInterval(showTime, 1000);
+setInterval(showTime, 1);
 
 // Alarm code
 
 // Set input elemtent to today's date:
 
-function setDefaultTime () {
+function setDefaultTime() {
     let defaultTime = new Date();
-    let rearrangedTime = defaultTime.getFullYear() 
-                        + '-' 
-                        + ('0' + (defaultTime.getMonth() + 1)).slice(-2) 
-                        + '-' 
-                        + ('0' + defaultTime.getDate()).slice(-2)
-                        + 'T' 
-                        + '00:00';
+    let rearrangedTime = defaultTime.getFullYear()
+        + '-'
+        + ('0' + (defaultTime.getMonth() + 1)).slice(-2)
+        + '-'
+        + ('0' + defaultTime.getDate()).slice(-2)
+        + 'T'
+        + '00:00';
     // YYYY-MM-DDT00:00
-    console.log(rearrangedTime, typeof rearrangedTime);
     document.getElementById('alarm-time').setAttribute('value', rearrangedTime);
 }
 setDefaultTime();
@@ -104,38 +109,50 @@ alarmSound.src = 'alarm.wav';
 // Sets alarm:
 
 function setAlarm() {
-    
+
     // Problem: the two time objects (userTimeInteger and nowInteger are not coming out at the same value
     //           - i.e. when converted into integers even when they are the same time they won't equal 0)
 
     let userTime = document.getElementById('alarm-time').valueAsNumber;
     let userTimeToDateObject = new Date(userTime);
     let userTimeInteger = userTimeToDateObject.getTime();
+    let userTimeAjusted = userTimeInteger - 3600000;
 
-    console.log(userTimeInteger);
-    
     let now = new Date();
     let nowInteger = now.getTime();
-
-    console.log(nowInteger);
 
     if (userTime === '') {
         return alert('Please set a time');
     }
 
-    console.log('from user:', userTimeToDateObject, typeof userTimeToDateObject);
-    console.log('time now:', now, typeof now);
-
-    if (userTimeInteger > nowInteger) {
+    if (userTimeAjusted <= nowInteger) {
         alert('Time already passed');
     } else {
-        initAlarm();
+        checkAlarmIsDue(userTimeAjusted);
     }
 
+}
+
+// This function worked correctly (setting showTime() interval to every ms solved problem
+// of having alarm trigger a second early)
+
+function checkAlarmIsDue(userTimeAjusted) {
+    setInterval(function () {
+        let now = new Date();
+        let nowInteger = now.getTime();
+        console.log((userTimeAjusted), (nowInteger));
+        if (userTimeAjusted <= nowInteger) {
+            initAlarm();
+        }
+    }, 1)
 }
 
 function initAlarm() {
     alarmSound.play();
 }
 
-console.log(typeof (initAlarm));
+function stopAlarm() {
+    alarmSound.pause();
+    alarmSound.currentTime = 0;
+    console.log('STOP');
+}
