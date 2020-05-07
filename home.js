@@ -1,3 +1,5 @@
+let myInterval = null;
+
 // Calum's homework: make it an alarm clock wich makes a sound (maybe custom sound/multiple sounds/plays a youtube video when the alarm goes off)
 // As a user I want to be able to set a specific time the alarm goes off so that I can wake up at a specific time
 // Goes off between two times randomly
@@ -121,6 +123,9 @@ function setAlarm() {
     let now = new Date();
     let nowInteger = now.getTime();
 
+    console.log(userTimeToDateObject);
+    console.log(now);
+
     if (userTime === '') {
         return alert('Please set a time');
     }
@@ -137,10 +142,10 @@ function setAlarm() {
 // of having alarm trigger a second early)
 
 function checkAlarmIsDue(userTimeAjusted) {
-    setInterval(function () {
+    myInterval = setInterval(function () {
         let now = new Date();
         let nowInteger = now.getTime();
-        console.log((userTimeAjusted), (nowInteger));
+        // console.log((userTimeAjusted), (nowInteger));
         if (userTimeAjusted <= nowInteger) {
             initAlarm();
         }
@@ -152,7 +157,7 @@ function initAlarm() {
 }
 
 function stopAlarm() {
-    alarmSound.pause();
-    alarmSound.currentTime = 0;
-    console.log('STOP');
+    // alarmSound.pause();
+    // alarmSound.currentTime = 0;
+    window.clearInterval(myInterval);
 }
