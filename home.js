@@ -1,8 +1,8 @@
+// Declarations
+
 let myInterval = null;
 
-// Calum's homework: make it an alarm clock wich makes a sound (maybe custom sound/multiple sounds/plays a youtube video when the alarm goes off)
-// As a user I want to be able to set a specific time the alarm goes off so that I can wake up at a specific time
-// Goes off between two times randomly
+// Create HTML elements
 
 let containerElement = document.createElement('div');
 
@@ -19,8 +19,7 @@ let alarmElement = document.createElement('div');
 let alarmSelector = document.createElement('form');
 let alarmLabel = document.createElement('label');
 let alarmInput = document.createElement('input');
-let alarmSet = document.createElement('input');
-let alarmStop = document.createElement('input')
+let alarmButton = document.createElement('input');
 
 // Create and append elements
 
@@ -35,30 +34,27 @@ clockElement.appendChild(secondsElement);
 alarmElement.appendChild(alarmSelector);
 alarmSelector.appendChild(alarmLabel);
 alarmSelector.appendChild(alarmInput);
-alarmSelector.appendChild(alarmSet);
-alarmSelector.appendChild(alarmStop);
+alarmSelector.appendChild(alarmButton);
 
 // Create form data
 
 alarmLabel.setAttribute('for', 'alarm-time');
 alarmInput.setAttribute('type', 'datetime-local');
 alarmInput.setAttribute('id', 'alarm-time');
-alarmSet.setAttribute('type', 'button');
-alarmSet.setAttribute('value', 'Set Alarm');
-alarmSet.setAttribute('id', 'set-alarm');
-alarmSet.setAttribute('onclick', 'setAlarm()');
-alarmStop.setAttribute('type', 'button');
-alarmStop.setAttribute('value', 'Stop Alarm');
-alarmStop.setAttribute('id', 'stop-alarm');
-alarmStop.setAttribute('onclick', 'stopAlarm()');
+alarmButton.setAttribute('type', 'button');
+alarmButton.setAttribute('value', 'Set Alarm');
+alarmButton.setAttribute('id', 'set-alarm');
+alarmButton.setAttribute('onclick', 'setAlarm()');
 
-// Set class attribute
+// Set class attributes
 
 containerElement.className = 'container';
 clockElement.className = 'clock';
 hoursElement.className = 'hours';
 minutesElement.className = 'minutes';
 secondsElement.className = 'seconds';
+
+// Display the current time
 
 function showTime() {
     const now = new Date();
@@ -85,9 +81,9 @@ function showTime() {
 showTime();
 setInterval(showTime, 1);
 
-// Alarm code
+// Alarm inputs
 
-// Set input elemtent to today's date:
+// Set input elemtent to today's date
 
 function setDefaultTime() {
     let defaultTime = new Date();
@@ -103,17 +99,14 @@ function setDefaultTime() {
 }
 setDefaultTime();
 
-// Creates alarm sound:
+// Create alarm sound
 
 const alarmSound = new Audio();
 alarmSound.src = 'alarm.wav';
 
-// Sets alarm:
+// Set alarm
 
 function setAlarm() {
-
-    // Problem: the two time objects (userTimeInteger and nowInteger are not coming out at the same value
-    //           - i.e. when converted into integers even when they are the same time they won't equal 0)
 
     let userTime = document.getElementById('alarm-time').valueAsNumber;
     let userTimeToDateObject = new Date(userTime);
@@ -122,9 +115,6 @@ function setAlarm() {
 
     let now = new Date();
     let nowInteger = now.getTime();
-
-    console.log(userTimeToDateObject);
-    console.log(now);
 
     if (userTime === '') {
         return alert('Please set a time');
@@ -138,8 +128,7 @@ function setAlarm() {
 
 }
 
-// This function worked correctly (setting showTime() interval to every ms solved problem
-// of having alarm trigger a second early)
+// Repeatedly check if the alarm is due
 
 function checkAlarmIsDue(userTimeAjusted) {
     myInterval = setInterval(function () {
@@ -152,12 +141,18 @@ function checkAlarmIsDue(userTimeAjusted) {
     }, 1)
 }
 
+// Sound alarm
+
 function initAlarm() {
     alarmSound.play();
+    alarmButton.setAttribute('value', 'Stop Alarm');
+    alarmButton.setAttribute('onclick', 'stopAlarm()');
 }
 
+// Stop alarm
+
 function stopAlarm() {
-    // alarmSound.pause();
-    // alarmSound.currentTime = 0;
     window.clearInterval(myInterval);
+    alarmButton.setAttribute('value', 'Set Alarm');
+    alarmButton.setAttribute('onclick', 'setAlarm()');
 }
