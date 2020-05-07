@@ -123,6 +123,7 @@ function setAlarm() {
     if (userTimeAjusted <= nowInteger) {
         alert('Time already passed');
     } else {
+        alarmButton.setAttribute('value', 'Alarm Set');
         checkAlarmIsDue(userTimeAjusted);
     }
 
