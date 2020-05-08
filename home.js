@@ -20,6 +20,7 @@ let alarmSelector = document.createElement('form');
 let alarmLabel = document.createElement('label');
 let alarmInput = document.createElement('input');
 let alarmButton = document.createElement('input');
+let alarmWarning = document.createElement('span');
 
 // Create and append elements
 
@@ -32,6 +33,7 @@ clockElement.appendChild(minutesElement);
 clockElement.appendChild(secondsElement);
 
 alarmElement.appendChild(alarmSelector);
+alarmElement.appendChild(alarmWarning);
 alarmSelector.appendChild(alarmLabel);
 alarmSelector.appendChild(alarmInput);
 alarmSelector.appendChild(alarmButton);
@@ -45,6 +47,8 @@ alarmButton.setAttribute('type', 'button');
 alarmButton.setAttribute('value', 'Set Alarm');
 alarmButton.setAttribute('id', 'set-alarm');
 alarmButton.setAttribute('onclick', 'setAlarm()');
+alarmWarning.setAttribute('hidden', '');
+alarmWarning.innerText = 'The selected time has already passed';
 
 // Set class attributes
 
@@ -53,6 +57,7 @@ clockElement.className = 'clock';
 hoursElement.className = 'hours';
 minutesElement.className = 'minutes';
 secondsElement.className = 'seconds';
+alarmWarning.className = 'alarm-warning';
 
 // Display the current time
 
@@ -121,9 +126,11 @@ function setAlarm() {
     }
 
     if (userTimeAjusted <= nowInteger) {
-        alert('Time already passed');
+        // alert('Time already passed');
+        alarmWarning.removeAttribute('hidden', '');
     } else {
         alarmButton.setAttribute('value', 'Alarm Set');
+        alarmWarning.setAttribute('hidden', '');
         checkAlarmIsDue(userTimeAjusted);
     }
 
