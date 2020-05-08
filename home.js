@@ -1,3 +1,5 @@
+// FIX MULTIPLE SET BUTTON ISSUE
+
 // Declarations
 
 let myInterval = null;
@@ -120,6 +122,8 @@ function setAlarm() {
 
     let now = new Date();
     let nowInteger = now.getTime();
+
+    alarmButton.removeAttribute('onclick', 'setAlarm()');
 
     if (userTime === '') {
         return alert('Please set a time');
