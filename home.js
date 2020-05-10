@@ -1,8 +1,20 @@
-// FIX MULTIPLE SET BUTTON ISSUE
+// FIX MULTIPLE SET BUTTON ISSUE - WHY DOES THIS PROBLEM OCCUR? IS IT BECAUSE EACH FUNCTION CALL MAKES A NEW FUNCTION VALUE (MENTAL MODEL)?
 
-// Declarations
+// Declarations and sounds
 
 let myInterval = null;
+let alarmSound = null;
+
+let alarmSoundOne = new Audio();
+alarmSoundOne.src = './sounds/soundone.wav';
+let alarmSoundTwo = new Audio();
+alarmSoundTwo.src = './sounds/soundtwo.wav';
+let alarmSoundThree = new Audio();
+alarmSoundThree.src = './sounds/soundthree.wav';
+let alarmSoundFour = new Audio();
+alarmSoundFour.src = './sounds/soundfour.wav';
+let alarmSoundFive = new Audio();
+alarmSoundFive.src = './sounds/soundfive.wav';
 
 // Create HTML elements
 
@@ -11,55 +23,117 @@ let containerElement = document.createElement('div');
 // Clock elements
 
 let clockElement = document.createElement('div');
-let hoursElement = document.createElement('span');
-let minutesElement = document.createElement('span');
-let secondsElement = document.createElement('span');
+    let hoursElement = document.createElement('span');
+    let minutesElement = document.createElement('span');
+    let secondsElement = document.createElement('span');
 
-// Alarm selector elements
+// Alarm set form elements
 
 let alarmElement = document.createElement('div');
-let alarmSelector = document.createElement('form');
-let alarmLabel = document.createElement('label');
-let alarmInput = document.createElement('input');
-let alarmButton = document.createElement('input');
-let alarmWarning = document.createElement('span');
+    let alarmSelector = document.createElement('form');
+        let alarmLabel = document.createElement('label');
+        let alarmInput = document.createElement('input');
+        let alarmButton = document.createElement('input');
+    let alarmWarning = document.createElement('span');
+
+// Alarm sound selectors
+
+let soundElement = document.createElement('div');
+    let oneContainer = document.createElement('div');
+        let soundOne = document.createElement('input');
+        let soundOneLabel = document.createElement('label');
+    let soundTwo = document.createElement('input');
+    let soundTwoLabel = document.createElement('label');
+    let soundThree = document.createElement('input');
+    let soundThreeLabel = document.createElement('label');
+    let soundFour = document.createElement('input');
+    let soundFourLabel = document.createElement('label');
+    let soundFive = document.createElement('input');
+    let soundFiveLabel = document.createElement('label');
 
 // Create and append elements
 
 document.body.appendChild(containerElement);
-containerElement.appendChild(clockElement);
-containerElement.appendChild(alarmElement);
-
-clockElement.appendChild(hoursElement);
-clockElement.appendChild(minutesElement);
-clockElement.appendChild(secondsElement);
-
-alarmElement.appendChild(alarmSelector);
-alarmElement.appendChild(alarmWarning);
-alarmSelector.appendChild(alarmLabel);
-alarmSelector.appendChild(alarmInput);
-alarmSelector.appendChild(alarmButton);
+    containerElement.appendChild(clockElement);
+        clockElement.appendChild(hoursElement);
+        clockElement.appendChild(minutesElement);
+        clockElement.appendChild(secondsElement);
+    containerElement.appendChild(alarmElement);
+        alarmElement.appendChild(alarmSelector);
+        alarmElement.appendChild(alarmWarning);
+        alarmSelector.appendChild(alarmLabel);
+        alarmSelector.appendChild(alarmInput);
+        alarmSelector.appendChild(alarmButton);
+    containerElement.appendChild(soundElement);
+        soundElement.appendChild(oneContainer);
+            oneContainer.appendChild(soundOne);
+            oneContainer.appendChild(soundOneLabel);
+        soundElement.appendChild(soundTwo);
+        soundElement.appendChild(soundTwoLabel);
+        soundElement.appendChild(soundThree);
+        soundElement.appendChild(soundThreeLabel);
+        soundElement.appendChild(soundFour);
+        soundElement.appendChild(soundFourLabel);
+        soundElement.appendChild(soundFive);
+        soundElement.appendChild(soundFiveLabel);
 
 // Create form data
 
+containerElement.setAttribute('id', 'container');
+
+clockElement.setAttribute('id', 'clock-container');
+
+alarmElement.setAttribute('id', 'alarm-container');
+alarmSelector.setAttribute('id', 'alarm-form');
 alarmLabel.setAttribute('for', 'alarm-time');
 alarmInput.setAttribute('type', 'datetime-local');
 alarmInput.setAttribute('id', 'alarm-time');
+
 alarmButton.setAttribute('type', 'button');
 alarmButton.setAttribute('value', 'Set Alarm');
 alarmButton.setAttribute('id', 'set-alarm');
 alarmButton.setAttribute('onclick', 'setAlarm()');
+
 alarmWarning.setAttribute('hidden', '');
 alarmWarning.innerText = 'The selected time has already passed';
 
-// Set class attributes
+soundElement.setAttribute('id', 'sound-container');
+oneContainer.setAttribute('id', 'one-container');
+soundOne.setAttribute('type', 'radio');
+soundOne.setAttribute('id', 'one');
+soundOne.setAttribute('name', 'alarm-sound');
+soundOne.setAttribute('value', 'one');
+soundOne.setAttribute('checked', '');
+soundOneLabel.setAttribute('for', 'one');
+soundOneLabel.setAttribute('id', 'one')
+soundOneLabel.innerText = 'One';
+soundTwo.setAttribute('type', 'radio');
+soundTwo.setAttribute('id', 'two');
+soundTwo.setAttribute('name', 'alarm-sound');
+soundTwo.setAttribute('value', 'two');
+soundTwoLabel.setAttribute('for', 'two');
+soundTwoLabel.innerText = 'Two';
+soundThree.setAttribute('type', 'radio');
+soundThree.setAttribute('id', 'three');
+soundThree.setAttribute('name', 'alarm-sound');
+soundThree.setAttribute('value', 'three');
+soundThreeLabel.setAttribute('for', 'three');
+soundThreeLabel.innerText = 'Three';
+soundFour.setAttribute('type', 'radio');
+soundFour.setAttribute('id', 'four');
+soundFour.setAttribute('name', 'alarm-sound');
+soundFour.setAttribute('value', 'four');
+soundFourLabel.setAttribute('for', 'four');
+soundFourLabel.innerText = 'Four';
+soundFive.setAttribute('type', 'radio');
+soundFive.setAttribute('id', 'five');
+soundFive.setAttribute('name', 'alarm-sound');
+soundFive.setAttribute('value', 'five');
+soundFiveLabel.setAttribute('for', 'five');
+soundFiveLabel.innerText = 'Five';
 
-containerElement.className = 'container';
-clockElement.className = 'clock';
-hoursElement.className = 'hours';
-minutesElement.className = 'minutes';
-secondsElement.className = 'seconds';
-alarmWarning.className = 'alarm-warning';
+soundOne.className = 'one';
+soundOneLabel.className = 'one';
 
 // Display the current time
 
@@ -90,9 +164,10 @@ setInterval(showTime, 1);
 
 // Alarm inputs
 
-// Set input elemtent to today's date
+// Set input elemtent to today's date and current time on load
 
 function setDefaultTime() {
+    console.log('default time set');
     let defaultTime = new Date();
     let rearrangedTime = defaultTime.getFullYear()
         + '-'
@@ -100,20 +175,31 @@ function setDefaultTime() {
         + '-'
         + ('0' + defaultTime.getDate()).slice(-2)
         + 'T'
-        + '00:00';
+        + defaultTime.getHours()
+        + ':'
+        + defaultTime.getMinutes();
     // YYYY-MM-DDT00:00
-    document.getElementById('alarm-time').setAttribute('value', rearrangedTime);
+    alarmInput.setAttribute('value', rearrangedTime);
 }
 setDefaultTime();
 
-// Create alarm sound
+// Hover to preview sound
 
-const alarmSound = new Audio();
-alarmSound.src = 'alarm.wav';
+oneContainer.onmouseover = function () {
+    console.log('class hover one');
+    alarmSoundOne.play();   
+}
+oneContainer.onmouseleave = function () {
+    console.log('class leave one');
+    alarmSoundOne.pause();
+    alarmSoundOne.currentTime = 0;   
+}
 
 // Set alarm
 
 function setAlarm() {
+
+    console.log('alarm set');
 
     let userTime = document.getElementById('alarm-time').valueAsNumber;
     let userTimeToDateObject = new Date(userTime);
@@ -123,8 +209,6 @@ function setAlarm() {
     let now = new Date();
     let nowInteger = now.getTime();
 
-    alarmButton.removeAttribute('onclick', 'setAlarm()');
-
     if (userTime === '') {
         return alert('Please set a time');
     }
@@ -133,7 +217,8 @@ function setAlarm() {
         // alert('Time already passed');
         alarmWarning.removeAttribute('hidden', '');
     } else {
-        alarmButton.setAttribute('value', 'Alarm Set');
+        // alarmButton.setAttribute('value', 'Alarm Set');
+        // replace with span showing time set
         alarmWarning.setAttribute('hidden', '');
         checkAlarmIsDue(userTimeAjusted);
     }
@@ -143,6 +228,8 @@ function setAlarm() {
 // Repeatedly check if the alarm is due
 
 function checkAlarmIsDue(userTimeAjusted) {
+    alarmButton.setAttribute('value', 'Reset Alarm');
+    alarmButton.setAttribute('onclick', 'stopAlarm()');
     myInterval = setInterval(function () {
         let now = new Date();
         let nowInteger = now.getTime();
@@ -156,7 +243,27 @@ function checkAlarmIsDue(userTimeAjusted) {
 // Sound alarm
 
 function initAlarm() {
+
+    console.log('alarm sounding');
+
+    // CORNER CASE PROBLEM: while alarm is playing if you select another sound it starts playing
+
+    if (soundOne.checked === true) {
+        alarmSound = alarmSoundOne;
+    } else if (soundTwo.checked === true) {
+        alarmSound = alarmSoundTwo;
+    } else if (soundThree.checked === true) {
+        alarmSound = alarmSoundThree;
+    } else if (soundFour.checked === true) {
+        alarmSound = alarmSoundFour;
+    } else if (soundFive.checked === true) {
+        alarmSound = alarmSoundFive;
+    } else {
+        alarmSound = alarmSoundOne;
+    }
+
     alarmSound.play();
+
     alarmButton.setAttribute('value', 'Stop Alarm');
     alarmButton.setAttribute('onclick', 'stopAlarm()');
 }
@@ -164,7 +271,16 @@ function initAlarm() {
 // Stop alarm
 
 function stopAlarm() {
+
+    console.log('stop alarm or reset alarm');
+
     window.clearInterval(myInterval);
+
+    alarmSound.pause();
+    alarmSound.currentTime = 0;
+
     alarmButton.setAttribute('value', 'Set Alarm');
     alarmButton.setAttribute('onclick', 'setAlarm()');
+    alarmSelector.reset(); // resets the datetime-local form so that setDefaultTime() can re-fill the current date and time
+    setDefaultTime();
 }
