@@ -175,11 +175,12 @@ function setDefaultTime() {
         + '-'
         + ('0' + defaultTime.getDate()).slice(-2)
         + 'T'
-        + defaultTime.getHours()
+        + ('0' + (defaultTime.getHours() + 1)).slice(-2)
         + ':'
-        + defaultTime.getMinutes();
+        + ('0' + defaultTime.getMinutes()).slice(-2);
     // YYYY-MM-DDT00:00
     alarmInput.setAttribute('value', rearrangedTime);
+    console.log(defaultTime.getHours(), defaultTime.getMinutes());
 }
 setDefaultTime();
 
