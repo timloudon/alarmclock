@@ -1,4 +1,4 @@
-// FIX MULTIPLE SET BUTTON ISSUE - WHY DOES THIS PROBLEM OCCUR? IS IT BECAUSE EACH FUNCTION CALL MAKES A NEW FUNCTION VALUE (MENTAL MODEL)?
+// Re-write code using MomentJS
 
 // Declarations and sounds
 
@@ -30,13 +30,15 @@ let clockElement = document.createElement('div');
 // Alarm set form elements
 
 let alarmElement = document.createElement('div');
-    let alarmSelector = document.createElement('form');
-        let alarmLabel = document.createElement('label');
-        let alarmInput = document.createElement('input');
-        let alarmButton = document.createElement('input');
-    let alarmWarning = document.createElement('span');
+let alarmSelector = document.createElement('form');
+let alarmLabel = document.createElement('label');
+let alarmInput = document.createElement('input');
+let alarmButton = document.createElement('input');
+let alarmWarning = document.createElement('span');
 
 // Alarm sound selectors
+
+// Try making a function that creates the elements
 
 let soundElement = document.createElement('div');
     let oneContainer = document.createElement('div');
@@ -135,32 +137,39 @@ soundFiveLabel.innerText = 'Five';
 soundOne.className = 'one';
 soundOneLabel.className = 'one';
 
+let newThing = document.createElement('span');
+containerElement.appendChild(newThing);
+newThing.innerText = moment().format('LTS');
+
 // Display the current time
 
 function showTime() {
-    const now = new Date();
-    let seconds = now.getSeconds();
-    if (seconds < 10) {
-        secondsElement.innerText = '0' + seconds;
-    } else {
-        secondsElement.innerText = seconds;
-    }
-    let minutes = now.getMinutes();
-    if (minutes < 10) {
-        minutesElement.innerText = '0' + minutes + ':';
-    } else {
-        minutesElement.innerText = minutes + ':';
-    }
-    let hours = now.getHours();
-    if (hours < 10) {
-        hoursElement.innerText = '0' + hours + ':';
-    } else {
-        hoursElement.innerText = hours + ':';
-    }
+    hoursElement.innerText = moment().format('hh:mm:ss');
 }
 
+// function showTime() {
+//     const now = new Date();
+//     let seconds = now.getSeconds();
+//     if (seconds < 10) {
+//         secondsElement.innerText = '0' + seconds;
+//     } else {
+//         secondsElement.innerText = seconds;
+//     }
+//     let minutes = now.getMinutes();
+//     if (minutes < 10) {
+//         minutesElement.innerText = '0' + minutes + ':';
+//     } else {
+//         minutesElement.innerText = minutes + ':';
+//     }
+//     let hours = now.getHours();
+//     if (hours < 10) {
+//         hoursElement.innerText = '0' + hours + ':';
+//     } else {
+//         hoursElement.innerText = hours + ':';
+//     }
+// }
 showTime();
-setInterval(showTime, 1);
+setInterval(showTime, 1000);
 
 // Alarm inputs
 
@@ -178,6 +187,7 @@ function setDefaultTime() {
         + ('0' + (defaultTime.getHours() + 1)).slice(-2)
         + ':'
         + ('0' + defaultTime.getMinutes()).slice(-2);
+        console.log('rearrangedTime', rearrangedTime);
     // YYYY-MM-DDT00:00
     alarmInput.setAttribute('value', rearrangedTime);
     console.log(defaultTime.getHours(), defaultTime.getMinutes());
@@ -205,10 +215,14 @@ function setAlarm() {
     let userTime = document.getElementById('alarm-time').valueAsNumber;
     let userTimeToDateObject = new Date(userTime);
     let userTimeInteger = userTimeToDateObject.getTime();
-    let userTimeAjusted = userTimeInteger - 3600000;
+    // let userTimeAjusted = userTimeInteger - 3600000;
+
+    console.log('usertime', userTimeToDateObject);
 
     let now = new Date();
     let nowInteger = now.getTime();
+
+    console.log('time now', now);
 
     if (userTime === '') {
         return alert('Please set a time');
