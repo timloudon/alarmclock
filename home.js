@@ -247,13 +247,12 @@ function setAlarm() {
     // take only hours and minutes from userTime
     let userAlarmTime = document.getElementById('alarm-time').value.slice(11);
     setButtonToResetAlarm();
-    checkAlarmIsDue(userAlarmTime); // temp to trigger alarm immediately
-    // if (userAlarmTime <= now) {
-    //     alarmWarning.removeAttribute('hidden', '');
-    // } else {
-    //     alarmWarning.setAttribute('hidden', '');
-    //     checkAlarmIsDue(userAlarmTime);
-    // }
+    if (userAlarmTime <= now) {
+        alarmWarning.removeAttribute('hidden', '');
+    } else {
+        alarmWarning.setAttribute('hidden', '');
+        checkAlarmIsDue(userAlarmTime);
+    }
 }
 
 function resetAlarm() {
