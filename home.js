@@ -1,13 +1,14 @@
-// To Do:
-// - write resetDefaultTime function to refill placeholder text
-// - fix flow problem for alarmstopping (using cal's abstracted functions principle)
-// - adding a delay on the mousedown event (using async function example here - https://stackoverflow.com/questions/17883692/how-to-set-time-delay-in-javascript)
-
-// Re-write code using MomentJS
+// --------------------
 
 // Declarations and sounds
 
+// --------------------
+
 // Note: datetime-local input type needs timestring format: YYYY-MM-DDT00:00
+
+// To do:
+// 1. Do I need 4 different audio objects?
+// 2. Set up loops for iteratin over attributes (ln. 202)
 
 let now = null;
 let userTime = null;
@@ -18,18 +19,16 @@ let myInterval = null;
 let myOtherInterval = null;
 let mouseDownTimeout = null;
 
-const alarmSoundOne = new Audio();
-alarmSoundOne.src = './sounds/soundone.wav';
-const alarmSoundTwo = new Audio();
-alarmSoundTwo.src = './sounds/soundtwo.wav';
-const alarmSoundThree = new Audio();
-alarmSoundThree.src = './sounds/soundthree.wav';
-const alarmSoundFour = new Audio();
-alarmSoundFour.src = './sounds/soundfour.wav';
-const alarmSoundFive = new Audio();
-alarmSoundFive.src = './sounds/soundfive.wav';
+const alarmSoundOne = new Audio('./sounds/soundone.wav');
+const alarmSoundTwo = new Audio('./sounds/soundtwo.wav');
+const alarmSoundThree = new Audio('./sounds/soundthree.wav');
+const alarmSoundFour = new Audio('./sounds/soundfour.wav');
 
-// Create HTML elements
+// --------------------
+
+// HTML
+
+// --------------------
 
 let containerElement = document.createElement('div');
 
@@ -170,6 +169,8 @@ function showTime() {
     now = moment().format('HH:mm:ss');
     nowFormated = moment().format('YYYY-MM-DDTHH:mm');
     alarmInput.setAttribute('value', nowFormated);
+    document.getElementsByName('datetime-field')[0].value = '';
+    document.getElementsByName('datetime-field')[0].value = nowFormated;
     hoursElement.innerText = now;
 }
 showTime();
@@ -297,7 +298,6 @@ function initAlarm() {
 }
 
 function stopAlarm() {
-    console.log('stop alarm');
     clearInterval(myOtherInterval);
     stopAlarmSound(alarmSound);
     resetAlarm();
